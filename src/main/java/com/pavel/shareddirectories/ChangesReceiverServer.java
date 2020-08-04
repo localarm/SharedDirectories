@@ -16,7 +16,7 @@ public class ChangesReceiverServer{
     private final int port;
     /** сокет для прослушивания входящих соединений от удаленного пользователя*/
     private volatile ServerSocket serverSocket;
-    /** сокет ддя коммуникации с удаленным пользователем */
+    /** сокет для коммуникации с удаленным пользователем */
     private volatile Socket client;
     /** поток в котором запускается проверка серверного сокета*/
     private volatile Thread server;
@@ -103,16 +103,15 @@ public class ChangesReceiverServer{
             try {
                 server.join(timeoutMs);
             } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            if (serverSocket!=null) {
-                serverSocket.close();
+                LOGGER.warn("Server join interrupted ", e);
             }
             if (client!=null && !client.isClosed()) {
                 client.close();
             }
-        }
-         catch (IOException e) {
+            if (serverSocket!=null) {
+                serverSocket.close();
+            }
+        } catch (IOException e) {
             LOGGER.info("Exception occurred during socket closing", e);
         }
     }

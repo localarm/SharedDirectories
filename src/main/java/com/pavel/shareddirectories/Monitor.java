@@ -58,10 +58,10 @@ public class Monitor{
             synchronized (locker) {
                 LOGGER.debug("client entered synchronized block");
                 for (File element : Objects.requireNonNull(sharedDirPath.listFiles())) {
-                    currentFilesInPath.add(element);
                     if (element.isHidden() || element.isDirectory()){
                         continue;
                     }
+                    currentFilesInPath.add(element);
                     if (!sharedDirIndex.containsKey(element)) {
                         LOGGER.debug("client found new file {}", element.getName());
                         filesToCreate.add(element);
